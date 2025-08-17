@@ -35,7 +35,6 @@ class GameObject:
 
     def draw(self):
         """Отрисовать объект (по умолчанию одна ячейка в position)."""
-        pass
         
     def draw_cell(self, position):
         """Отрисовать одну ячейку объекта."""
@@ -44,8 +43,6 @@ class GameObject:
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
         
         
-
-
 class Apple(GameObject):
     """Класс яблока."""
 

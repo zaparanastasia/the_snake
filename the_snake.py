@@ -33,15 +33,16 @@ class GameObject:
         self.position = position
         self.body_color = color
 
+    def draw(self):
+        """Отрисовать объект (по умолчанию одна ячейка в position)."""
+        
     def draw_cell(self, position):
         """Отрисовать одну ячейку объекта."""
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
         
-    def draw(self):
-        """Отрисовать объект (по умолчанию одна ячейка в position)."""
-        pass
+        
 
 
 class Apple(GameObject):

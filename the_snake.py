@@ -35,6 +35,7 @@ class GameObject:
 
     def draw(self):
         """Отрисовать объект (по умолчанию одна ячейка в position)."""
+        pass
         
     def draw_cell(self, position):
         """Отрисовать одну ячейку объекта."""

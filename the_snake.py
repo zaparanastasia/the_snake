@@ -43,7 +43,7 @@ class GameObject:
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
-        
+
 class Apple(GameObject):
     """Класс яблока."""
 

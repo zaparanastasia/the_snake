@@ -40,7 +40,7 @@ class GameObject:
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
         
     def draw(self):
-    """Отрисовать объект (по умолчанию одна ячейка в position)."""
+        """Отрисовать объект (по умолчанию одна ячейка в position)."""
         pass
 
 

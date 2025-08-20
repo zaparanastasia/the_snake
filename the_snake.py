@@ -2,7 +2,6 @@ from random import choice, randint
 
 import pygame
 
-
 # --- Константы ---
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
@@ -108,7 +107,6 @@ class Snake(GameObject):
 
 def handle_keys(snake):
     """Обрабатывает нажатия клавиш и обновляет направление змеи."""
-    new_direction = None
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (
             event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
@@ -117,6 +115,54 @@ def handle_keys(snake):
             raise SystemExit
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                new_direction = UP
+                snake.update_direction(UP)
             elif event.key == pygame.K_DOWN:
-                new_direction = DOWN
+                snake.update_direction(DOWN)
+            elif event.key == pygame.K_LEFT:
+                snake.update_direction(LEFT)
+            elif event.key == pygame.K_RIGHT:
+                snake.update_direction(RIGHT)
+
+
+def main():
+    """Главная функция игры."""
+    snake = Snake()
+    apple = Apple(set(snake.positions))
+    speed = SPEED
+    max_length = 1
+
+    while True:
+        clock.tick(speed)
+        handle_keys(snake)
+        snake.move()
+
+        # Проверка на самоукус
+        if snake.get_head_position() in snake.positions[1:]:
+            screen.fill(BOARD_BACKGROUND_COLOR)
+            snake.reset()
+            apple.randomize_position(set(snake.positions))
+            speed = SPEED
+            max_length = 1
+            continue
+
+        # Проверка на яблоко
+        if snake.get_head_position() == apple.position:
+            snake.length += 1
+            apple.randomize_position(set(snake.positions))
+            speed += 1
+
+        snake.draw()
+        apple.draw()
+
+        max_length = max(max_length, snake.length)
+
+        caption = (
+            f'Змейка | ESC - выход | Скорость: {speed} | '
+            f'Рекорд длины: {max_length}'
+        )
+        pygame.display.set_caption(caption)
+        pygame.display.update()
+
+
+if __name__ == '__main__':
+    main()

@@ -88,7 +88,12 @@ class Snake(GameObject):
                     (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT)
 
         self.positions.insert(0, new_head)
-        self.last = self.positions.pop() if len(self.positions) > self.length else None
+        # --- Исправлено для PEP8 ---
+        self.last = (
+            self.positions.pop()
+            if len(self.positions) > self.length
+            else None
+        )
 
     def draw(self):
         """Отрисовывает голову и хвост змейки."""
@@ -159,7 +164,7 @@ def main():
         # --- caption разбит на две строки для PEP8 ---
         caption = (
             f'Змейка | ESC - выход | Скорость: {speed} | '
-            f'Рекорд длины: {max_length}'  # noqa: E501
+            f'Рекорд длины: {max_length}'
         )
         pygame.display.set_caption(caption)
         pygame.display.update()

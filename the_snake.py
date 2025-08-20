@@ -158,9 +158,8 @@ def main():
 
         # --- caption разбит на две строки для PEP8 ---
         caption = (
-            'Змейка | ESC - выход | Скорость: {} | '
-            'Рекорд длины: {}'.format(speed, max_length)
-        )
+            f'Змейка | ESC - выход | Скорость: {speed} | '
+        caption += f'Рекорд длины: {max_length}')
         pygame.display.set_caption(caption)
         pygame.display.update()
 

@@ -156,9 +156,10 @@ def main():
 
         max_length = max(max_length, snake.length)
 
-        # --- Исправленный заголовок для PEP8 ---
-        caption = 'Змейка | ESC - выход | Скорость: {} | Рекорд длины: {}'.format(
-            speed, max_length
+        # --- caption разбит на две строки для PEP8 ---
+        caption = (
+            'Змейка | ESC - выход | Скорость: {} | '
+            'Рекорд длины: {}'.format(speed, max_length)
         )
         pygame.display.set_caption(caption)
         pygame.display.update()

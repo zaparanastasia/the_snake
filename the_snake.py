@@ -6,6 +6,8 @@ This module defines three classes:
 - Snake: the player-controlled snake.
 
 It also contains the main game loop with input handling and game rules.
+
+PEP 8 compliant, with docstrings for public callables.
 """
 from __future__ import annotations
 
@@ -40,7 +42,7 @@ SPEED_START = 20
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption("Змейка")
 clock = pygame.time.Clock()
 
 Coord = Tuple[int, int]
@@ -64,9 +66,8 @@ def build_occupied(
 class GameObject:
     """Base class for game objects with a position and color."""
 
-    def __init__(self, position: Coord = CENTER,
-                 color: Tuple[int, int, int] = SNAKE_COLOR):
-        """Initialize object with *position* and *color*."""
+    def __init__(self, position: Coord = CENTER, color: Tuple[int, int, int] = (0, 0, 0)):
+        """Initialize object with position and color."""
         self.position: Coord = position
         self.body_color: Tuple[int, int, int] = color
 
@@ -77,8 +78,7 @@ class GameObject:
     def draw_cell(
         self, position: Coord, color: Optional[Tuple[int, int, int]] = None
     ) -> None:
-        """Draw a single cell at *position* using *color* or self.body_color.
-        """
+        """Draw a single cell at position using color or self.body_color."""
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color or self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -87,15 +87,13 @@ class GameObject:
 class Apple(GameObject):
     """Apple object that spawns in a random free cell."""
 
-    def __init__(self, occupied: Optional[Set[Coord]] = None):
+    def __init__(self, occupied: Set[Coord] = set()):
         """Create an apple and place it at a free random cell."""
         super().__init__(CENTER, APPLE_COLOR)
-        if occupied is None:
-            occupied = set()
         self.randomize_position(occupied)
 
     def randomize_position(self, occupied: Set[Coord]) -> None:
-        """Place the apple at a random free cell, avoiding *occupied*."""
+        """Place the apple at a random free cell, avoiding occupied cells."""
         free: list[Coord] = [
             (x * GRID_SIZE, y * GRID_SIZE)
             for x in range(GRID_WIDTH)
@@ -123,7 +121,7 @@ class Snake(GameObject):
         return self.positions[0]
 
     def update_direction(self, new_direction: Coord) -> None:
-        """Update direction if *new_direction* isn't opposite."""
+        """Update direction if new_direction isn't opposite."""
         if new_direction != OPPOSITE[self.direction]:
             self.direction = new_direction
 
@@ -185,7 +183,6 @@ def main() -> None:
 
     while True:
         clock.tick(speed)
-
         handle_keys(snake)
         snake.move()
 
@@ -211,7 +208,6 @@ def main() -> None:
             )
         )
         pygame.display.update()
-
         speed = SPEED_START + (snake.length - 1)
 
 

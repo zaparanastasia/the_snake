@@ -6,8 +6,6 @@ This module defines three classes:
 - Snake: the player-controlled snake.
 
 It also contains the main game loop with input handling and game rules.
-
-PEP 8 compliant, with docstrings for public callables.
 """
 from __future__ import annotations
 
@@ -66,19 +64,20 @@ def build_occupied(
 class GameObject:
     """Base class for game objects with a position and color."""
 
-    def __init__(self, position: Coord, color: Tuple[int, int, int]):
+    def __init__(self, position: Coord = CENTER,
+                 color: Tuple[int, int, int] = SNAKE_COLOR):
         """Initialize object with *position* and *color*."""
         self.position: Coord = position
         self.body_color: Tuple[int, int, int] = color
 
     def draw(self) -> None:
         """Draw the object. Subclasses must implement their own drawing."""
+        pass
 
     def draw_cell(
         self, position: Coord, color: Optional[Tuple[int, int, int]] = None
     ) -> None:
-        """Draw a single cell at *position* using *color*
-        or self.body_color.
+        """Draw a single cell at *position* using *color* or self.body_color.
         """
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color or self.body_color, rect)
@@ -88,9 +87,11 @@ class GameObject:
 class Apple(GameObject):
     """Apple object that spawns in a random free cell."""
 
-    def __init__(self, occupied: Set[Coord]):
+    def __init__(self, occupied: Optional[Set[Coord]] = None):
         """Create an apple and place it at a free random cell."""
         super().__init__(CENTER, APPLE_COLOR)
+        if occupied is None:
+            occupied = set()
         self.randomize_position(occupied)
 
     def randomize_position(self, occupied: Set[Coord]) -> None:

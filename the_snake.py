@@ -42,7 +42,7 @@ SPEED_START = 20
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-pygame.display.set_caption("Змейка")
+pygame.display.set_caption('Змейка')
 clock = pygame.time.Clock()
 
 Coord = Tuple[int, int]
@@ -203,8 +203,9 @@ def main() -> None:
             apple.draw()
 
         pygame.display.set_caption(
-            f"Змейка | ESC — выход | Скорость: {speed} | "
-            f"Рекорд длины: {best_length}"
+            'Змейка | ESC — выход | Скорость: {} | Рекорд длины: {}'.format(
+                speed, best_length
+            )
         )
         pygame.display.update()
 

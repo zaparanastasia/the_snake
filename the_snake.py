@@ -208,7 +208,8 @@ def main() -> None:
             apple.draw()
 
         pygame.display.set_caption(
-            """Змейка | ESC — выход | Скорость: {} | Рекорд длины: {}""".format(
+            """Змейка | ESC — выход | Скорость: {}
+             | Рекорд длины: {}""".format(
                 speed, best_length
             )
         )
@@ -217,5 +218,5 @@ def main() -> None:
         speed = SPEED_START + (snake.length - 1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

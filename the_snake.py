@@ -78,7 +78,8 @@ class GameObject:
         self, position: Coord, color: Optional[Tuple[int, int, int]] = None
     ) -> None:
         """Draw a single cell at *position* using *color*
-        or self.body_color."""
+        or self.body_color.
+        """
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color or self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)

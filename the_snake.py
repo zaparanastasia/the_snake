@@ -77,7 +77,8 @@ class GameObject:
     def draw_cell(
         self, position: Coord, color: Optional[Tuple[int, int, int]] = None
     ) -> None:
-        """Draw a single cell at *position* using *color* or self.body_color."""
+        """Draw a single cell at *position* using *color*
+        or self.body_color."""
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color or self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -212,5 +213,5 @@ def main() -> None:
         speed = SPEED_START + (snake.length - 1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

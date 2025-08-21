@@ -42,21 +42,21 @@ SPEED_START = 20
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-pygame.display.set_caption('Змейка')
+pygame.display.set_caption("""Змейка""")
 clock = pygame.time.Clock()
 
 Coord = Tuple[int, int]
 
 
 def wrap_to_screen(x: int, y: int) -> Coord:
-    'Return coordinates wrapped around the screen edges.'
+    """Return coordinates wrapped around the screen edges."""
     return x % SCREEN_WIDTH, y % SCREEN_HEIGHT
 
 
 def build_occupied(
     snake_positions: Iterable[Coord], apple_pos: Optional[Coord] = None
 ) -> Set[Coord]:
-    'Return a set of currently occupied cells (snake + optional apple).'
+    """Return a set of currently occupied cells (snake + optional apple)."""
     occ: Set[Coord] = set(snake_positions)
     if apple_pos is not None:
         occ.add(apple_pos)
@@ -64,71 +64,73 @@ def build_occupied(
 
 
 class GameObject:
-    'Base class for game objects with a position and color.'
+    """Base class for game objects with a position and color."""
 
-    def __init__(self, position: Coord = CENTER, color: Tuple[int, int, int] = (0, 0, 0)):
-        'Initialize object with position and color.'
+    def __init__(
+        self, position: Coord = CENTER, color: Tuple[int, int, int] = (0, 0, 0)
+    ):
+        """Initialize object with position and color."""
         self.position: Coord = position
         self.body_color: Tuple[int, int, int] = color
 
     def draw(self) -> None:
-        'Draw the object. Subclasses must implement their own drawing.'
+        """Draw the object. Subclasses must implement their own drawing."""
         pass
 
     def draw_cell(
         self, position: Coord, color: Optional[Tuple[int, int, int]] = None
     ) -> None:
-        'Draw a single cell at position using color or self.body_color.'
+        """Draw a single cell at position using color or self.body_color."""
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color or self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
-    'Apple object that spawns in a random free cell.'
+    """Apple object that spawns in a random free cell."""
 
     def __init__(self, occupied: Optional[Set[Coord]] = None):
-        'Create an apple and place it at a free random cell.'
+        """Create an apple and place it at a free random cell."""
         if occupied is None:
             occupied = set()
         super().__init__(CENTER, APPLE_COLOR)
         self.randomize_position(occupied)
 
     def randomize_position(self, occupied: Set[Coord]) -> None:
-        'Place the apple at a random free cell, avoiding occupied.'
+        """Place the apple at a random free cell, avoiding occupied."""
         free: list[Coord] = [
-            (x * GRID_SIZE, y * GRID_HEIGHT)
+            (x * GRID_SIZE, y * GRID_SIZE)
             for x in range(GRID_WIDTH)
             for y in range(GRID_HEIGHT)
             if (x * GRID_SIZE, y * GRID_SIZE) not in occupied
         ]
         if free:
             self.position = free[choice(range(len(free)))]
-    
+
     def draw(self) -> None:
-        'Draw the apple as a filled square cell.'
+        """Draw the apple as a filled square cell."""
         self.draw_cell(self.position)
 
 
 class Snake(GameObject):
-    'Player-controlled snake with grid-based movement.'
+    """Player-controlled snake with grid-based movement."""
 
     def __init__(self) -> None:
-        'Construct the snake and reset it to the initial state.'
+        """Construct the snake and reset it to the initial state."""
         super().__init__(CENTER, SNAKE_COLOR)
         self.reset()
 
     def get_head_position(self) -> Coord:
-        'Return the current head position.'
+        """Return the current head position."""
         return self.positions[0]
 
     def update_direction(self, new_direction: Coord) -> None:
-        'Update direction if new_direction is not opposite.'
+        """Update direction if new_direction is not opposite."""
         if new_direction != OPPOSITE[self.direction]:
             self.direction = new_direction
 
     def move(self) -> None:
-        'Advance the snake by one cell in the current direction.'
+        """Advance the snake by one cell in the current direction."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
         new_head = wrap_to_screen(
@@ -140,14 +142,14 @@ class Snake(GameObject):
         )
 
     def draw(self) -> None:
-        'Draw the head and erase the trailing cell, if any.'
+        """Draw the head and erase the trailing cell, if any."""
         self.draw_cell(self.get_head_position())
         if self.last is not None:
             rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect)
 
     def reset(self) -> None:
-        'Reset the snake to initial state at the screen center.'
+        """Reset the snake to initial state at the screen center."""
         self.length: int = 1
         self.positions: list[Coord] = [CENTER]
         self.direction: Coord = choice([UP, DOWN, LEFT, RIGHT])
@@ -155,7 +157,7 @@ class Snake(GameObject):
 
 
 def handle_keys(snake: Snake) -> None:
-    'Process pygame events and steer the snake or exit.'
+    """Process pygame events and steer the snake or exit."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -175,7 +177,7 @@ def handle_keys(snake: Snake) -> None:
 
 
 def main() -> None:
-    'Run the Snake game main loop.'
+    """Run the Snake game main loop."""
     snake = Snake()
     occupied = build_occupied(snake.positions)
     apple = Apple(occupied)
@@ -206,7 +208,7 @@ def main() -> None:
             apple.draw()
 
         pygame.display.set_caption(
-            'Змейка | ESC — выход | Скорость: {} | Рекорд длины: {}'.format(
+            """Змейка | ESC — выход | Скорость: {} | Рекорд длины: {}""".format(
                 speed, best_length
             )
         )
@@ -215,5 +217,5 @@ def main() -> None:
         speed = SPEED_START + (snake.length - 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
